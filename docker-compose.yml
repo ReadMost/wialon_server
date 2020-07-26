@@ -1,0 +1,20 @@
+version: "3"
+services:
+
+  app:
+#    image: "hub.egistic.kz/wialon:latest"
+    build: .
+    restart: "always"
+    expose:
+      - 8053
+    ports:
+      - "8053:8053"
+    volumes:
+      - ".:/code"
+    networks:
+      - wialon
+#    command: bash -c "python3 server.py"
+networks:
+  wialon:
+    external:
+      name: "wialon"
