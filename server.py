@@ -20,7 +20,7 @@ class ClientThread(MyThread):
 				msg = self.recv_custom(self.csocket)
 				if msg is None:
 					print("None message was send")
-					self.send_all_custom(self.csocket,"")
+					# self.send_all_custom(self.csocket,"")
 					continue
 				# print(msg,  "<<<")
 				self.save_logs(self.clientAddress, msg, dir = "pure_logs")
