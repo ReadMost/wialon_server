@@ -29,7 +29,7 @@ class ClientThread(MyThread):
 					request = WialonRequest(self.csocket, self.clientAddress,  msg, self.is_authorised)
 					# self.send_all_custom(self.csocket, msg)
 
-				except self.csocket.error:
+				except socket.error:
 					print("\033[1;35;40m",  str(socket.error))
 					cprint(str(socket.error), "yellow", "on_grey")
 					self.save_logs(self.clientAddress, "ERROR!!! " + str(socket.error), dir = "error_logs")
