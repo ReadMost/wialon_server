@@ -74,6 +74,6 @@ def save_logs(clientAddress, msg, time=datetime.datetime.now(), dir=""):
 		Path(dir).mkdir(parents=True, exist_ok=True)
 	if dir[-1] != '/':
 		dir += '/'
-	with open(dir + clientAddress[0] + ":" + str(clientAddress[1]) + ".txt", "a+") as f:
+	with open(dir + clientAddress[0] + ".txt", "a+") as f:
 		f.write(str(time) + " => " + msg + "\n")
 
