@@ -43,7 +43,7 @@ class MyThread(threading.Thread):
 		if not msg:
 			msg = "NO LOGS"
 		with open(dir + clientAddress[0] + ".txt", "a+") as f:
-			f.write(str(time) + " => " + msg + "\n")
+			f.write(str(time) + "=>" + msg + "\n")
 
 
 
@@ -75,5 +75,5 @@ def save_logs(clientAddress, msg, time=datetime.datetime.now(), dir=""):
 	if dir[-1] != '/':
 		dir += '/'
 	with open(dir + clientAddress[0] + ".txt", "a+") as f:
-		f.write(str(time) + " => " + msg + "\n")
+		f.write(str(time) + "=>" + msg + "\n")
 

@@ -20,31 +20,31 @@ class ExtendedRequest(object):
 	def __repr__(self):
 		result = ''
 		if self._date_time:
-			result += "_date_time:" + str(self._date_time) + " | "
+			result += "_date_time:" + str(self._date_time) + ";"
 		if self._lat:
-			result += "_lat:" + str(self._lat) + " | "
+			result += "_lat:" + str(self._lat) + ";"
 		if self._lon:
-			result += "_lon:" + str(self._lon) + " | "
+			result += "_lon:" + str(self._lon) + ";"
 		if self._speed:
-			result += "_speed:" + str(self._speed) + " | "
+			result += "_speed:" + str(self._speed) + ";"
 		if self._course:
-			result += "_course:" + str(self._course) + " | "
+			result += "_course:" + str(self._course) + ";"
 		if self._alt:
-			result += "_alt:" + str(self._alt) + " | "
+			result += "_alt:" + str(self._alt) + ";"
 		if self._sats:
-			result += "_sats:" + str(self._sats) + " | "
+			result += "_sats:" + str(self._sats) + ";"
 		if self._hdop:
-			result += "_hdop:" + str(self._hdop) + " | "
+			result += "_hdop:" + str(self._hdop) + ";"
 		if self._inputs:
-			result += "_inputs:" + str(self._inputs) + " | "
+			result += "_inputs:" + str(self._inputs) + ";"
 		if self._outputs:
-			result += "_outputs:" + str(self._outputs) + " | "
+			result += "_outputs:" + str(self._outputs) + ";"
 		if self._adc:
-			result += "_adc:" + self._adc + " | "
+			result += "_adc:" + self._adc + ";"
 		if self._ibutton:
-			result += "_ibutton:" + str(self._ibutton) + " | "
+			result += "_ibutton:" + str(self._ibutton) + ";"
 		if self.parameters:
-			result += "parameters:" + str(self.parameters) + " | "
+			result += "parameters:" + str(self.parameters) + ";"
 		return result
 
 	def get_latitude(self, coord, direction):
