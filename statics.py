@@ -1,7 +1,7 @@
 DEBUG = False
 # if not DEBUG: SERVER = "0.0.0.0"
 # else: SERVER = "94.247.135.91"
-SERVER = "94.247.135.91"
+SERVER = "0.0.0.0"
 PORT = 8053
 
 crc16_table = [
