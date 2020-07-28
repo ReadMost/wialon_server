@@ -30,9 +30,16 @@ class WialonRequestBase:
 		msg = divided_request[-1].split(";")
 		crc_hex = msg.pop()
 		if crc_hex:
-			crc = int(crc_hex, 16)
-			self.crc = hex(crc)
-		self.msg = ";".join(msg) + ";"
+			try:
+				crc = int(crc_hex, 16)
+				self.crc = hex(crc)
+				self.msg = ";".join(msg) + ";"
+			except:
+				crc_bb = crc_hex.split("|")
+				crc = int(crc_bb.pop(), 16)
+				self.crc = hex(crc)
+				self.msg = ";".join(msg) + ";" + crc_bb[0] + "|"
+
 
 	def decompress_request(self):
 		try:

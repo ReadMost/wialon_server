@@ -30,6 +30,8 @@ class WialonRequest(WialonRequestBase):
 			self.handle_short_request()
 		elif self.packet_type == "D":
 			self.handle_extended_request()
+		elif self.packet_type == "B":
+			self.handle_black_box_request()
 		else:
 			send_all_custom(self.socket, "WARNING: Unhandled message")
 
@@ -157,6 +159,44 @@ class WialonRequest(WialonRequestBase):
 			# Incorrect packet structure.
 			print(str(e) + " OTHER ERROR <<")
 			send_all_custom(self.socket, "#AD#-1")
+
+	def handle_black_box_request(self):
+		# Date;Time;Lat1;Lat2;Lon1;Lon2;Speed;Course;Alt;Sats;HDOP;Inputs;Outputs;ADC;Ibutton;Params;
+		msg_spliteds = self.msg.split("|")
+		try:
+			self.validate_crc()
+			total_num = 0
+			bb_requests = []
+			for msg_splited in msg_spliteds:
+				if not msg_splited:
+					continue
+				try:
+					msg_splited = msg_splited.split(";")
+					short_req = ShortRequest(self.socket)
+					short_req.date_time = msg_splited[0], msg_splited[1]
+					short_req.lat = (msg_splited[2], msg_splited[3])
+					short_req.lon = (msg_splited[4], msg_splited[5])
+					short_req.speed = msg_splited[6]
+					short_req.course = msg_splited[7]
+					short_req.alt = msg_splited[8]
+					short_req.sats = msg_splited[9]
+					short_req.hdop = msg_splited[10]
+					short_req.inputs = msg_splited[11]
+					short_req.outputs = msg_splited[12]
+					short_req.adc = msg_splited[13]
+					short_req.ibutton = msg_splited[14]
+					short_req.parameters = msg_splited[15]
+					total_num+=1
+					bb_requests.append(short_req)
+				except:
+					continue
+
+			# Packet successfully registered.
+			save_logs(self.clientAddress, str(bb_requests), dir="black_box_logs")
+			send_all_custom(self.socket, f"#AB#{total_num}")
+		except CrcError:
+			# Checksum verification error.
+			send_all_custom(self.socket, "#AB#")
 
 
 
