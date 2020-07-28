@@ -42,7 +42,7 @@ class MyThread(threading.Thread):
 			dir += '/'
 		if not msg:
 			msg = "NO LOGS"
-		with open(dir + clientAddress[0] + ":" + str(clientAddress[1]) + ".txt", "a+") as f:
+		with open(dir + clientAddress[0] + ".txt", "a+") as f:
 			f.write(str(time) + " => " + msg + "\n")
 
 
