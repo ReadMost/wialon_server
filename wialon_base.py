@@ -16,8 +16,8 @@ class WialonRequestBase:
 		self.crc = None
 
 		# todo: remove in production
-		if not DEBUG:
-			self.decompress_request()
+		# if not DEBUG:
+		# 	self.decompress_request()
 		self.parse_request()
 		# self.validate_crc()
 
