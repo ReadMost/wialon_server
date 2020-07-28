@@ -15,9 +15,10 @@ class ClientThread(MyThread):
 
 	def run(self):
 
-			msg = ''
+
 			while True:
 				try:
+					msg = ''
 					msg = self.recv_custom(self.csocket)
 					if msg is None:
 						raise OSError

@@ -35,7 +35,9 @@ class MyThread(threading.Thread):
 		sending_string = b"".join([mess, PACKET_END])
 		ssock.sendall(sending_string)
 
-	def save_logs(self, clientAddress, msg, time=datetime.datetime.now(), dir=""):
+	def save_logs(self, clientAddress, msg, time=None, dir=""):
+		if time is None:
+			time = datetime.datetime.now()
 		if dir:
 			Path(dir).mkdir(parents=True, exist_ok=True)
 		if dir[-1] != '/':
@@ -69,7 +71,9 @@ def send_all_custom(ssock, mess):
 	sending_string = b"".join([mess, PACKET_END])
 	ssock.sendall(sending_string)
 
-def save_logs(clientAddress, msg, time=datetime.datetime.now(), dir=""):
+def save_logs(clientAddress, msg, time=None, dir=""):
+	if time is None:
+		time = datetime.datetime.now()
 	if dir:
 		Path(dir).mkdir(parents=True, exist_ok=True)
 	if dir[-1] != '/':
