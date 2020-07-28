@@ -29,7 +29,8 @@ class ClientThread(MyThread):
 					request = WialonRequest(self.csocket, self.clientAddress,  msg, self.is_authorised)
 					# self.send_all_custom(self.csocket, msg)
 
-				except OSError:
+				except OSError as e:
+					print(str(e))
 					cprint(str(self.clientAddress) + " has gone", "red", "on_grey")
 					break
 				except socket.error:
