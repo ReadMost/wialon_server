@@ -30,8 +30,8 @@ class WialonRequest(WialonRequestBase):
 			self.handle_short_request()
 		elif self.packet_type == "D":
 			self.handle_extended_request()
-		# elif self.packet_type == "B":
-		# 	self.handle_black_box_request()
+		elif self.packet_type == "B":
+			self.handle_black_box_request()
 		else:
 			send_all_custom(self.socket, "WARNING: Unhandled message")
 

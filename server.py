@@ -14,35 +14,33 @@ class ClientThread(MyThread):
 		print("New connection added: ", clientAddress)
 
 	def run(self):
-
-
-			while True:
-				try:
-					msg = ''
-					msg = self.recv_custom(self.csocket)
-					if msg is None:
-						print("None message was send")
-						self.send_all_custom(self.csocket,"")
-						continue
-					# print(msg,  "<<<")
-					self.save_logs(self.clientAddress, msg, dir = "pure_logs")
-					if msg == 'bye':
-						break
-					request = WialonRequest(self.csocket, self.clientAddress,  msg, self.is_authorised)
-					# self.send_all_custom(self.csocket, msg)
-
-
-				except OSError as e:
-					print(str(e), "-------------")
-					cprint(str(self.clientAddress) + " has gone", "red", "on_grey")
+		msg = ''
+		while True:
+			try:
+				msg = self.recv_custom(self.csocket)
+				if msg is None:
+					print("None message was send")
+					self.send_all_custom(self.csocket,"")
+					continue
+				# print(msg,  "<<<")
+				self.save_logs(self.clientAddress, msg, dir = "pure_logs")
+				if msg == 'bye':
 					break
-				except socket.error:
-					print("\033[1;35;40m",  str(socket.error))
-					cprint(str(socket.error), "yellow", "on_grey")
-					self.save_logs(self.clientAddress, "ERROR!!! " + str(socket.error), dir = "error_logs")
-				except Exception as e:
-					cprint(str(e), "magenta", "on_cyan")
-					self.send_all_custom(self.csocket, "ERROR: " + str(e))
+				request = WialonRequest(self.csocket, self.clientAddress,  msg, self.is_authorised)
+				# self.send_all_custom(self.csocket, msg)
+
+
+			except OSError as e:
+				print(str(e), "-------------")
+				cprint(str(self.clientAddress) + " has gone", "red", "on_grey")
+				break
+			except socket.error:
+				print("\033[1;35;40m",  str(socket.error))
+				cprint(str(socket.error), "yellow", "on_grey")
+				self.save_logs(self.clientAddress, "ERROR!!! " + str(socket.error), dir = "error_logs")
+			except Exception as e:
+				cprint(str(e), "magenta", "on_cyan")
+				self.send_all_custom(self.csocket, "ERROR: " + str(e))
 
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
