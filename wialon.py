@@ -180,15 +180,10 @@ class WialonRequest(WialonRequestBase):
 					short_req.course = msg_splited[7]
 					short_req.alt = msg_splited[8]
 					short_req.sats = msg_splited[9]
-					short_req.hdop = msg_splited[10]
-					short_req.inputs = msg_splited[11]
-					short_req.outputs = msg_splited[12]
-					short_req.adc = msg_splited[13]
-					short_req.ibutton = msg_splited[14]
-					short_req.parameters = msg_splited[15]
 					total_num+=1
 					bb_requests.append(short_req)
-				except:
+				except Exception as e:
+					print(str(total_num) , " ", str(e))
 					continue
 
 			# Packet successfully registered.

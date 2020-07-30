@@ -21,8 +21,8 @@ class ClientThread(MyThread):
 				if msg is None:
 					print("None message was send")
 					self.send_all_custom(self.csocket,"")
-					continue
-					# raise OSError
+					# continue
+					raise OSError
 				# print(msg,  "<<<")
 				self.save_logs(self.clientAddress, msg, dir = "pure_logs")
 				if msg == 'bye':
@@ -50,7 +50,7 @@ server.bind((SERVER, PORT))
 # print("Server started")
 print("Waiting for client request..")
 while True:
-	server.listen(5)
+	server.listen(1)
 	clientsock, clientAddress = server.accept()
 	newthread = ClientThread(clientAddress, clientsock)
 	newthread.start()
