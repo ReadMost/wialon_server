@@ -25,7 +25,6 @@ class MyThread(threading.Thread):
 
 			message, ignored, buffer = buffer.partition(PACKET_END)
 			self.buffer = buffer
-			print("buffer = ", buffer)
 			# lock.release()
 			if is_pickle:
 				return pickle.loads(message)
