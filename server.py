@@ -20,15 +20,12 @@ class ClientThread(MyThread):
 				msg = self.recv_custom(self.csocket)
 				if msg is None:
 					print("None message was send")
-					self.send_all_custom(self.csocket,"")
-					# continue
 					raise OSError
 				# print(msg,  "<<<")
 				self.save_logs(self.clientAddress, msg, dir = "pure_logs")
 				if msg == 'bye':
 					break
 				request = WialonRequest(self.csocket, self.clientAddress,  msg, self.is_authorised)
-				# self.send_all_custom(self.csocket, msg)
 
 
 			except OSError as e:

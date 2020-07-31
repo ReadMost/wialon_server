@@ -121,7 +121,7 @@ class ShortRequest(object):
 		try:
 			if value != "NA":
 				converted_value =  int(value)
-				if converted_value < 0 or converted_value > 359:
+				if converted_value < 0 or converted_value > 360:
 					raise SatelliteError
 				self._course = converted_value
 		except Exception as e:

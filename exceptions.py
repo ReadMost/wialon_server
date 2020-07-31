@@ -25,21 +25,28 @@ class CommonError(Exception):
 		return f'{self.request} -> {self.message}'
 
 class CoordinateError(Exception):
-	pass
+	def __str__(self):
+		return "CoordinateError"
 
 class TimeError(Exception):
-	pass
+	def __str__(self):
+		return "TimeError"
 
 class StatisticError(Exception):
-	pass
+	def __str__(self):
+		return "StatisticError"
 
 class SatelliteError(Exception):
-	pass
+	def __str__(self):
+		return "SatelliteError"
 
 class InOutError(Exception):
-	pass
+	def __str__(self):
+		return "InOutError"
 
 class ADCError(Exception):
-	pass
+	def __str__(self):
+		return "ADCError"
 class ParamsError(Exception):
-	pass
+	def __str__(self):
+		return "ParamsError"
