@@ -47,7 +47,7 @@ server.bind((SERVER, PORT))
 # print("Server started")
 print("Waiting for client request..")
 while True:
-	server.listen(1)
+	server.listen(5)
 	clientsock, clientAddress = server.accept()
 	newthread = ClientThread(clientAddress, clientsock)
 	newthread.start()
