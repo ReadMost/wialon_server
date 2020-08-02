@@ -1,5 +1,6 @@
 DEBUG = False
-if not DEBUG: SERVER = "0.0.0.0"
+if not DEBUG:
+ SERVER = "127.0.0.1"
 else:
  SERVER = "94.247.135.91"
  # SERVER = "0.0.0.0"
