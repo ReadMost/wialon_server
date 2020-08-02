@@ -23,7 +23,7 @@ class ShortRequestSession(object):
 
 	@staticmethod
 	def save_data(date_time, point, speed, course, alt, sats, black_box, *args, **kwargs):
-		sh_req = ShortPacket(date_time=date_time, point="SRID=3857;" + transform_geom(point[1], point[0]),
+		sh_req = ShortPacket(date_time=date_time, point="SRID=3857;" + transform_geom(point[1], point[0]).wkt,
 		                     speed=speed, course=course, alt=alt, sats=sats, black_box=black_box)
 		session.add(sh_req)
 		session.commit()
