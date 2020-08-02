@@ -1,10 +1,10 @@
 DEBUG = False
 if not DEBUG:
- SERVER = "127.0.0.1"
+ CLIENT_SERVER = "0.0.0.0"
 else:
- SERVER = "94.247.135.91"
+ CLIENT_SERVER = "94.247.135.91"
  # SERVER = "0.0.0.0"
-# SERVER = "94.247.135.91"
+SERVER = "0.0.0.0"
 PORT = 8053
 
 crc16_table = [

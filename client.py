@@ -24,7 +24,7 @@ REFERENCES:
    https://github.com/croja/wialon_ips/blob/master/wialon_ips.py - tests here
 '''
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect((SERVER, PORT))
+client.connect((CLIENT_SERVER, PORT))
 count = 0
 while True:
 	# if count < 5 and count != 0:
