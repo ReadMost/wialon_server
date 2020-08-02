@@ -1,4 +1,4 @@
-DEBUG = False
+DEBUG = True
 if not DEBUG:
  CLIENT_SERVER = "0.0.0.0"
 else:

@@ -66,8 +66,8 @@ class ShortRequest(object):
 					date_time = datetime.datetime.strptime(date + " " + time, '%d%m%y %H%M%S')
 				else:
 					date_time = datetime.datetime.strptime(date, '%d%m%y')
-			localtz = timezone('Europe/Lisbon')
-			dt_aware = localtz.localize(timezone)
+
+			dt_aware = timezone.localize(date_time)
 			self._date_time = dt_aware
 		except Exception as e:
 			print(str(e))
