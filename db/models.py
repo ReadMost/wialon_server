@@ -1,10 +1,12 @@
 # coding=utf-8
+import datetime
 
 from sqlalchemy import Column, String, Integer, Float, DateTime, ForeignKey
 
 from db.base import Base
 from geoalchemy2 import Geometry
-
+import pytz
+timezone = pytz.timezone("Asia/Almaty")
 
 class BlackBoxPacket(Base):
 	__tablename__ = 'telematics_blackboxpacket'
@@ -16,7 +18,7 @@ class BlackBoxPacket(Base):
 		self.was_send = was_send
 		self.was_proceeded = was_proceeded
 
-class ShartPacket(Base):
+class ShortPacket(Base):
 	__tablename__ = 'telematics_shortpacket'
 
 	id = Column(Integer, primary_key=True, autoincrement=True)
@@ -26,6 +28,7 @@ class ShartPacket(Base):
 	course = Column(Integer, nullable=True)
 	alt = Column(Integer, nullable=True)
 	sats = Column(Integer, nullable=True)
+	created_at = Column(DateTime, default=datetime.datetime.now(timezone))
 	black_box = Column('black_box_id', Integer, ForeignKey('telematics_blackboxpacket.id'))
 
 	def __init__(self, date_time, point, speed, course, alt, sats, black_box):
@@ -70,3 +73,4 @@ class Params(Base):
 		self.type = type
 		self.value = value
 		self.extended = extended
+

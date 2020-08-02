@@ -1,5 +1,9 @@
+import pytz
+
+from db.db_reflect import ShortRequestSession
 from exceptions import *
 import datetime
+timezone = pytz.timezone("Asia/Almaty")
 
 class ShortRequest(object):
 	def __init__(self, socket):
@@ -62,7 +66,9 @@ class ShortRequest(object):
 					date_time = datetime.datetime.strptime(date + " " + time, '%d%m%y %H%M%S')
 				else:
 					date_time = datetime.datetime.strptime(date, '%d%m%y')
-			self._date_time = date_time
+			localtz = timezone('Europe/Lisbon')
+			dt_aware = localtz.localize(timezone)
+			self._date_time = dt_aware
 		except Exception as e:
 			print(str(e))
 			raise TimeError
@@ -157,3 +163,8 @@ class ShortRequest(object):
 		except Exception as e:
 			print(str(e))
 			raise SatelliteError
+
+
+	def save(self):
+		ShortRequestSession.save_data(date_time=self.date_time, point=[self.lat, self.lon], speed=self.speed, course=self.speed,
+		                              alt=self.alt, sats=self.sats, black_box=None)
