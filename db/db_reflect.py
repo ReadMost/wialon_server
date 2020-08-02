@@ -12,9 +12,9 @@ from db.models import ShortPacket
 project = lambda x, y: pyproj.transform(pyproj.Proj(init='epsg:4326'), pyproj.Proj(init='epsg:3857'), x, y)
 
 
-def transform_geom(self, long, lat):
+def transform_geom(long, lat):
 	try:
-		return transform(self.project, Point(float(long), float(lat)))
+		return transform(project, Point(float(long), float(lat)))
 	except Exception as e:
 		print(str(e))
 
