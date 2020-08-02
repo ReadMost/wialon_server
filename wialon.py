@@ -183,7 +183,8 @@ class WialonRequest(WialonRequestBase):
 					short_req.sats = msg_splited[9]
 					total_num+=1
 					bb_requests.append(short_req)
-					short_req.save()
+					if short_req.lat and short_req.lon:
+						short_req.save()
 				except Exception as e:
 					print(str(total_num) , " ", str(e))
 					continue
