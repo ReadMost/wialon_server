@@ -9,6 +9,7 @@ class ClientThread(MyThread):
 	def __init__(self, clientAddress, clientsocket):
 		super().__init__()
 		self.csocket = clientsocket
+		self.imei = None
 		self.is_authorised = [False]
 		self.clientAddress = clientAddress
 		print("New connection added: ", clientAddress)
@@ -25,7 +26,9 @@ class ClientThread(MyThread):
 				self.save_logs(self.clientAddress, msg, dir = "pure_logs")
 				if msg == 'bye':
 					break
-				request = WialonRequest(self.csocket, self.clientAddress,  msg, self.is_authorised)
+				request = WialonRequest(self.csocket, self.clientAddress,  msg, self.is_authorised, self.imei)
+				if self.is_authorised[0] and not self.imei:
+					self.imei = request.imei
 
 
 			except OSError as e:

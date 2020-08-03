@@ -1,6 +1,7 @@
 import datetime
 
-from db.db_reflect import ShortRequestSession
+from db.db_reflect import BlackBoxSession
+
 from extended_request import ExtendedRequest
 from my_lib import send_all_custom, save_logs
 from short_request import ShortRequest
@@ -9,7 +10,7 @@ from exceptions import *
 
 
 class WialonRequest(WialonRequestBase):
-	def __init__(self, socket, clientAdress,  request, is_authorised):
+	def __init__(self, socket, clientAdress,  request, is_authorised, imei):
 		'''
 		self.socket
 		self.request
@@ -17,6 +18,7 @@ class WialonRequest(WialonRequestBase):
 		self.msg
 		self.crc
 		'''
+		self.imei = imei
 		super().__init__(socket, clientAdress, request)
 		self.main_check(is_authorised)
 
@@ -52,6 +54,7 @@ class WialonRequest(WialonRequestBase):
 			# todo: check the credentials to authentication
 			if imei and password:
 				is_authorised[0] = True
+				self.imei = imei
 				send_all_custom(self.socket, "#AL#1")
 			elif not password:
 				send_all_custom(self.socket, "#AL#01")
@@ -69,7 +72,7 @@ class WialonRequest(WialonRequestBase):
 		msg_splited = self.msg.split(";")
 		try:
 			self.validate_crc()
-			short_req = ShortRequest(self.socket)
+			short_req = ShortRequest(self.socket, self.imei, black_box=None)
 			short_req.date_time = msg_splited[0],msg_splited[1]
 			short_req.lat = (msg_splited[2],msg_splited[3])
 			short_req.lon = (msg_splited[4],msg_splited[5])
@@ -168,12 +171,13 @@ class WialonRequest(WialonRequestBase):
 			self.validate_crc()
 			total_num = 0
 			bb_requests = []
+			black_box = BlackBoxSession()
 			for msg_splited in msg_spliteds:
 				if not msg_splited:
 					continue
 				try:
 					msg_splited = msg_splited.split(";")
-					short_req = ShortRequest(self.socket)
+					short_req = ShortRequest(self.socket, self.imei, black_box=black_box.get().id)
 					short_req.date_time = msg_splited[0], msg_splited[1]
 					short_req.lat = (msg_splited[2], msg_splited[3])
 					short_req.lon = (msg_splited[4], msg_splited[5])
@@ -192,6 +196,7 @@ class WialonRequest(WialonRequestBase):
 			# Packet successfully registered.
 			save_logs(self.clientAddress, str(bb_requests), dir="black_box_logs")
 			send_all_custom(self.socket, f"#AB#{total_num}")
+			black_box.save(new_was_send=len(msg_spliteds), new_was_processed=total_num)
 		except CrcError:
 			# Checksum verification error.
 			send_all_custom(self.socket, "#AB#")

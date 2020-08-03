@@ -6,8 +6,10 @@ import datetime
 timezone = pytz.timezone("Asia/Almaty")
 
 class ShortRequest(object):
-	def __init__(self, socket):
+	def __init__(self, socket, imei, black_box):
 		self.socket = socket
+		self.imei = imei
+		self.black_box = black_box
 		self._date_time = None
 		self._lat = None
 		self._lon = None
@@ -168,4 +170,4 @@ class ShortRequest(object):
 	def save(self):
 		# print("lon", self.lon, " lat", self.lat, "------------------")
 		ShortRequestSession.save_data(date_time=self.date_time, point=[self.lat, self.lon], speed=self.speed, course=self.speed,
-		                              alt=self.alt, sats=self.sats, black_box=None)
+		                              alt=self.alt, sats=self.sats, black_box=self.black_box, imei=self.imei)
