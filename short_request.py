@@ -169,5 +169,5 @@ class ShortRequest(object):
 
 	def save(self):
 		# print("lon", self.lon, " lat", self.lat, "------------------")
-		ShortRequestSession.save_data(date_time=self.date_time, point=[self.lat, self.lon], speed=self.speed, course=self.speed,
+		ShortRequestSession.save_data(date_time=self.date_time, point=[self.lat, self.lon], speed=self.speed, course=self.course,
 		                              alt=self.alt, sats=self.sats, black_box=self.black_box, imei=self.imei)
