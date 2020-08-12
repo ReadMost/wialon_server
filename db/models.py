@@ -33,7 +33,7 @@ class ShortPacket(Base):
 	course = Column(Integer, nullable=True)
 	alt = Column(Integer, nullable=True)
 	sats = Column(Integer, nullable=True)
-	created_at = Column(DateTime, default=datetime.datetime.now(timezone))
+	created_at = Column(DateTime)
 	imei = Column(String, nullable=True)
 	black_box = Column('black_box_id', Integer, ForeignKey('telematics_blackboxpacket.id'))
 
@@ -46,6 +46,7 @@ class ShortPacket(Base):
 		self.sats = sats
 		self.black_box = black_box
 		self.imei = imei
+		self.created_at = datetime.datetime.now(timezone)
 
 class ExtendedPacket(Base):
 	__tablename__ = 'telematics_extendedpacket'
