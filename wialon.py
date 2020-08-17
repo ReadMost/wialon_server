@@ -114,7 +114,8 @@ class WialonRequest(WialonRequestBase):
 		msg_splited = self.msg.split(";")
 		try:
 			self.validate_crc()
-			short_req = ExtendedRequest(self.socket)
+
+			short_req = ShortRequest(self.socket, self.imei, None)
 			short_req.date_time = msg_splited[0], msg_splited[1]
 			short_req.lat = (msg_splited[2], msg_splited[3])
 			short_req.lon = (msg_splited[4], msg_splited[5])
@@ -122,15 +123,21 @@ class WialonRequest(WialonRequestBase):
 			short_req.course = msg_splited[7]
 			short_req.alt = msg_splited[8]
 			short_req.sats = msg_splited[9]
-			short_req.hdop = msg_splited[10]
-			short_req.inputs = msg_splited[11]
-			short_req.outputs = msg_splited[12]
-			short_req.adc = msg_splited[13]
-			short_req.ibutton = msg_splited[14]
-			short_req.parameters = msg_splited[15]
+			if short_req.lat and short_req.lon:
+				sh_req_saved = short_req.save()
+				extended_req = ExtendedRequest(sh_req_saved.id)
+				extended_req.hdop = msg_splited[10]
+				extended_req.inputs = msg_splited[11]
+				extended_req.outputs = msg_splited[12]
+				extended_req.adc = msg_splited[13]
+				extended_req.ibutton = msg_splited[14]
+				extended_req.parameters = msg_splited[15]
+				extended_req.save()
+				# Packet successfully registered.
+				save_logs(self.clientAddress, str(extended_req), dir="extended_request_logs")
 
-			# Packet successfully registered.
-			save_logs(self.clientAddress, str(short_req), dir="extended_request_logs")
+			else:
+				save_logs(self.clientAddress, str(short_req), dir="extended_request_logs")
 			send_all_custom(self.socket, "#AD#1")
 		except TimeError:
 			# Incorrect time.

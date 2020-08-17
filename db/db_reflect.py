@@ -7,7 +7,7 @@ from shapely.geometry import Point
 from shapely.ops import transform
 
 from db.base import session
-from db.models import ShortPacket, BlackBoxPacket
+from db.models import ShortPacket, BlackBoxPacket, ExtendedPacket, Params
 
 project = lambda x, y: pyproj.transform(pyproj.Proj(init='epsg:4326'), pyproj.Proj(init='epsg:3857'), x, y)
 
@@ -27,6 +27,7 @@ class ShortRequestSession(object):
 		                     speed=speed, course=course, alt=alt, sats=sats, black_box=black_box, imei=imei)
 		session.add(sh_req)
 		session.commit()
+		return sh_req
 
 class BlackBoxSession(object):
 
@@ -41,3 +42,21 @@ class BlackBoxSession(object):
 
 	def get(self):
 		return self.instance
+
+class ExtendedPacketSession(object):
+
+	@staticmethod
+	def save_data(hdop,inputs,outputs,adc,ibutton,short_packet):
+		extended_req = ExtendedPacket(hdop=hdop, inputs=inputs,
+		                     outputs=outputs, adc=adc, ibutton=ibutton, short_packet=short_packet)
+		session.add(extended_req)
+		session.commit()
+		return extended_req
+
+class ParamsSession(object):
+
+	@staticmethod
+	def save_data(name, type, value, extended):
+		params = Params(name, type, value, extended)
+		session.add(params)
+		session.commit()
