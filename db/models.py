@@ -27,7 +27,7 @@ class ShortPacket(Base):
 	__tablename__ = 'telematics_shortpacket'
 
 	id = Column(Integer, primary_key=True, autoincrement=True)
-	date_time = Column(DateTime, nullable=True)
+	date_time = Column(DateTime(timezone=True), nullable=True)
 	point = Column(Geometry('POINT'), nullable=True)
 	speed = Column(Integer, nullable=True)
 	course = Column(Integer, nullable=True)
