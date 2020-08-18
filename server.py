@@ -18,12 +18,13 @@ class ClientThread(MyThread):
 		msg = ''
 		while True:
 			try:
+				# print(msg,  "<<<")
+				self.save_logs(self.clientAddress, msg, dir="pure_logs")
 				msg = self.recv_custom(self.csocket)
 				if msg is None:
 					print("None message was send")
 					raise OSError
-				# print(msg,  "<<<")
-				self.save_logs(self.clientAddress, msg, dir = "pure_logs")
+
 				if msg == 'bye':
 					break
 				request = WialonRequest(self.csocket, self.clientAddress,  msg, self.is_authorised, self.imei)
