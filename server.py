@@ -27,9 +27,11 @@ class ClientThread(MyThread):
 
 				if msg == 'bye':
 					break
+
 				request = WialonRequest(self.csocket, self.clientAddress,  msg, self.is_authorised, self.imei)
 				if self.is_authorised[0] and not self.imei:
 					self.imei = request.imei
+					self.name = request.imei
 
 
 			except OSError as e:

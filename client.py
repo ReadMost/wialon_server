@@ -1,4 +1,6 @@
 import socket
+import threading
+
 from statics import *
 from my_lib import recv_custom, send_all_custom
 
@@ -47,6 +49,7 @@ while True:
 client.close()
 
 #L#2.0;Time;Password;
+#O#
 #c#2.0;IMEI;;2d49
 #SD#NA;NA;NA;N;NA;E;12;NA;NA;2;
 #D#121112;123212;NA;NA;NA;NA;NA;NA;NA;NA;2.2;0101;0101;ADC;Ibutton;name1:1:Value,name2:2:123.123,name3:3:Value;

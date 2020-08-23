@@ -1,4 +1,5 @@
 import datetime
+import threading
 
 from db.db_reflect import BlackBoxSession
 
@@ -35,6 +36,8 @@ class WialonRequest(WialonRequestBase):
 			self.handle_extended_request()
 		elif self.packet_type == "B":
 			self.handle_black_box_request()
+		elif self.packet_type == "O":
+			self.handle_online()
 		else:
 			send_all_custom(self.socket, "WARNING: Unhandled message")
 
@@ -63,8 +66,20 @@ class WialonRequest(WialonRequestBase):
 		except Exception as e:
 			send_all_custom(self.socket, "ERROR: " + str(e))
 
+	'''Ping request'''
 	def handle_ping(self):
 		send_all_custom(self.socket, "#AP#")
+
+	'''Online request'''
+
+	def handle_online(self):
+		is_first=False
+		for thread in threading.enumerate():
+			if not is_first and thread.name == self.imei:
+				is_first = True
+			elif is_first and thread.name == self.imei:
+				return send_all_custom(self.socket, "#AO#1")
+		return send_all_custom(self.socket, "#AO#0")
 
 	'''SD request'''
 	def handle_short_request(self):
