@@ -142,8 +142,5 @@ class ExtendedRequest(object):
 		# print("lon", self.lon, " lat", self.lat, "------------------")
 		extended = ExtendedPacketSession.save_data(hdop=self.hdop, inputs=self.inputs,
 		                                outputs=self.outputs, adc=self.adc, ibutton=self.ibutton, short_packet=self.short_packet)
-		if not extended:
-			print("Extended does not created")
-			return
 		for param in self._parameters:
 			ParamsSession.save_data(param['name'], param['type'], param['value'], extended.id)
