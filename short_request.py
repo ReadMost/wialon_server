@@ -116,7 +116,7 @@ class ShortRequest(object):
 	def speed(self, value):
 		try:
 			if value != "NA":
-				self._speed = int(value)
+				self._speed = int(float(value))
 		except Exception as e:
 			print(str(e))
 			raise StatisticError
@@ -130,7 +130,7 @@ class ShortRequest(object):
 	def course(self, value):
 		try:
 			if value != "NA":
-				converted_value =  int(value)
+				converted_value =  int(float(value))
 				if converted_value < 0 or converted_value > 360:
 					raise SatelliteError
 				self._course = converted_value
@@ -148,7 +148,7 @@ class ShortRequest(object):
 	def alt(self, value):
 		try:
 			if value != "NA":
-				self._alt = int(value)
+				self._alt = int(float(value))
 		except Exception as e:
 			print(str(e))
 			raise StatisticError
@@ -163,7 +163,7 @@ class ShortRequest(object):
 	def sats(self, value):
 		try:
 			if value != "NA":
-				self._sats = int(value)
+				self._sats = int(float(value))
 		except Exception as e:
 			print(str(e))
 			raise SatelliteError

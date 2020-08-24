@@ -34,15 +34,15 @@ class ExtendedRequest(object):
 		for param in params:
 			splited_param = param.split(":")
 			name, type_param, value = splited_param[0], int(splited_param[1]), splited_param[2]
-			try:
-				if type_param == 1:
-					value = int(value)
-				elif type_param == 2:
-					value = float(value)
-				elif type_param == 3:
-					pass
-			except:
-				continue
+			# try:
+			# 	if type_param == 1:
+			# 		value = int(value)
+			# 	elif type_param == 2:
+			# 		value = float(value)
+			# 	elif type_param == 3:
+			# 		pass
+			# except:
+			# 	continue
 			result.append(dict(name=name,type=type_param, value=value))
 		return result
 
@@ -135,11 +135,12 @@ class ExtendedRequest(object):
 			if value:
 				self._parameters = self.parse_params(value.split(","))
 		except Exception as e:
-			print(str(e))
+			print(str(e), "-----------1---")
 			raise ParamsError
 
 	def save(self):
 		# print("lon", self.lon, " lat", self.lat, "------------------")
+		print(str(self))
 		extended = ExtendedPacketSession.save_data(hdop=self.hdop, inputs=self.inputs,
 		                                outputs=self.outputs, adc=self.adc, ibutton=self.ibutton, short_packet=self.short_packet)
 		for param in self._parameters:
