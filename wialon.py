@@ -142,6 +142,7 @@ class WialonRequest(WialonRequestBase):
 			short_req.sats = msg_splited[9]
 			if short_req.lat and short_req.lon:
 				sh_req_saved = short_req.save()
+				print("---------> ID ", sh_req_saved.id)
 				extended_req = ExtendedRequest(sh_req_saved.id)
 				extended_req.hdop = msg_splited[10]
 				extended_req.inputs = msg_splited[11]
