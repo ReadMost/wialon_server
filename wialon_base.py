@@ -35,10 +35,15 @@ class WialonRequestBase:
 				self.crc = hex(crc)
 				self.msg = ";".join(msg) + ";"
 			except:
-				crc_bb = crc_hex.split("|")
-				crc = int(crc_bb.pop(), 16)
-				self.crc = hex(crc)
-				self.msg = ";".join(msg) + ";" + crc_bb[0] + "|"
+				try:
+					crc_bb = crc_hex.split("|")
+					crc = int(crc_bb.pop(), 16)
+					self.crc = hex(crc)
+					self.msg = ";".join(msg) + ";" + crc_bb[0] + "|"
+				except:
+					'''FOR D REQUEST WITHOUT CRC'''
+					self.crc = crc_hex
+					self.msg = ";".join(msg)
 
 
 	def decompress_request(self):

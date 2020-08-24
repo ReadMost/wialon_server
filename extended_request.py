@@ -140,7 +140,6 @@ class ExtendedRequest(object):
 
 	def save(self):
 		# print("lon", self.lon, " lat", self.lat, "------------------")
-		print(str(self))
 		extended = ExtendedPacketSession.save_data(hdop=self.hdop, inputs=self.inputs,
 		                                outputs=self.outputs, adc=self.adc, ibutton=self.ibutton, short_packet=self.short_packet)
 		for param in self._parameters:

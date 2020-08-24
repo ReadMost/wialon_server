@@ -19,8 +19,9 @@ class ClientThread(MyThread):
 		while True:
 			try:
 				# print(msg,  "<<<")
-				self.save_logs(self.clientAddress, msg, dir="pure_logs")
+
 				msg = self.recv_custom(self.csocket)
+				self.save_logs(self.clientAddress, msg, dir="pure_logs")
 				if msg is None:
 					print("None message was send")
 					raise OSError

@@ -128,9 +128,10 @@ class WialonRequest(WialonRequestBase):
 		# Date;Time;Lat1;Lat2;Lon1;Lon2;Speed;Course;Alt;Sats;HDOP;Inputs;Outputs;ADC;Ibutton;Params;
 		msg_splited = self.msg.split(";")
 		try:
-			print("-1111")
-			self.validate_crc()
-			print("000000")
+			if len(msg_splited) == 15:
+				msg_splited.append(self.crc)
+			else:
+				self.validate_crc()
 			short_req = ShortRequest(self.socket, self.imei, None)
 			short_req.date_time = msg_splited[0], msg_splited[1]
 			short_req.lat = (msg_splited[2], msg_splited[3])
@@ -141,17 +142,14 @@ class WialonRequest(WialonRequestBase):
 			short_req.sats = msg_splited[9]
 			if short_req.lat and short_req.lon:
 				sh_req_saved = short_req.save()
-				print("11111")
 				extended_req = ExtendedRequest(sh_req_saved.id)
 				extended_req.hdop = msg_splited[10]
 				extended_req.inputs = msg_splited[11]
 				extended_req.outputs = msg_splited[12]
 				extended_req.adc = msg_splited[13]
 				extended_req.ibutton = msg_splited[14]
-				print("2222")
 
 				extended_req.parameters = msg_splited[15]
-				print("33333")
 
 				extended_req.save()
 				# Packet successfully registered.
