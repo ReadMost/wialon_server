@@ -3,9 +3,12 @@ import datetime
 
 from sqlalchemy import Column, String, Integer, Float, DateTime, ForeignKey
 
-from db.base import Base, session
+from db.base import Base
 from geoalchemy2 import Geometry
 import pytz
+
+from db.thread_save import ManagedSession, init_session_factory
+
 timezone = pytz.timezone("Asia/Almaty")
 
 class BlackBoxPacket(Base):
@@ -19,9 +22,11 @@ class BlackBoxPacket(Base):
 		self.was_proceeded = was_proceeded
 
 	def save(self):
-		session.add(self)
-		session.commit()
-		return self
+		init_session_factory()
+		with ManagedSession() as session:
+
+			session.add(self)
+			return self
 
 class ShortPacket(Base):
 	__tablename__ = 'telematics_shortpacket'

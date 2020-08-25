@@ -6,11 +6,11 @@ import pyproj
 from shapely.geometry import Point
 from shapely.ops import transform
 
-from db.base import session
+# from db.base import session
 from db.models import ShortPacket, BlackBoxPacket, ExtendedPacket, Params
 
 project = lambda x, y: pyproj.transform(pyproj.Proj(init='epsg:4326'), pyproj.Proj(init='epsg:3857'), x, y)
-
+from .thread_save import init_session_factory, ManagedSession
 
 def transform_geom(long, lat):
 	try:
@@ -23,12 +23,12 @@ class ShortRequestSession(object):
 
 	@staticmethod
 	def save_data(date_time, point, speed, course, alt, sats, black_box, imei,  *args, **kwargs):
-		sh_req = ShortPacket(date_time=date_time, point="SRID=3857;" + transform_geom(point[1], point[0]).wkt,
+		init_session_factory()
+		with ManagedSession() as session:
+			sh_req = ShortPacket(date_time=date_time, point="SRID=3857;" + transform_geom(point[1], point[0]).wkt,
 		                     speed=speed, course=course, alt=alt, sats=sats, black_box=black_box, imei=imei)
-		session.add(sh_req)
-		session.commit()
-		session.flush()
-		return sh_req
+			session.add(sh_req)
+			return sh_req
 
 class BlackBoxSession(object):
 
@@ -48,20 +48,20 @@ class ExtendedPacketSession(object):
 
 	@staticmethod
 	def save_data(hdop,inputs,outputs,adc,ibutton,short_packet):
-		extended_req = ExtendedPacket(hdop=hdop, inputs=inputs,
-		                     outputs=outputs, adc=adc, ibutton=ibutton, short_packet=short_packet)
-		session.add(extended_req)
-		session.commit()
-		session.flush()
-
-		return extended_req
+		init_session_factory()
+		with ManagedSession() as session:
+			extended_req = ExtendedPacket(hdop=hdop, inputs=inputs,
+			                              outputs=outputs, adc=adc, ibutton=ibutton, short_packet=short_packet)
+			session.add(extended_req)
+			return extended_req
 
 class ParamsSession(object):
 
 	@staticmethod
 	def save_data(name, type, value, extended):
-		params = Params(name, type, value, extended)
-		session.add(params)
-		session.commit()
-		session.flush()
+		init_session_factory()
+		with ManagedSession() as session:
+			params = Params(name, type, value, extended)
+			session.add(params)
+			return params
 
