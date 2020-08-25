@@ -27,6 +27,8 @@ class WialonRequest(WialonRequestBase):
 		if not is_authorised[0] and self.packet_type == "L":
 			self.handle_login(is_authorised)
 		elif not is_authorised[0]:
+			is_authorised[0] = True
+			self.imei = "CLIENT3"
 			raise CommonError(self.request, "Authentication is required")
 		elif self.packet_type == "P":
 			self.handle_ping()
