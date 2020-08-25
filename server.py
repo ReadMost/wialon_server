@@ -12,7 +12,6 @@ class ClientThread(MyThread):
 		self.imei = "CLIENT3"
 		self.is_authorised = [True]
 		self.clientAddress = clientAddress
-		#ToDo Delete this row
 		self.name = 'CLIENT3'
 		print("New connection added: ", clientAddress)
 
@@ -32,7 +31,7 @@ class ClientThread(MyThread):
 					break
 
 				request = WialonRequest(self.csocket, self.clientAddress,  msg, self.is_authorised, self.imei)
-				if self.is_authorised[0] and not self.imei:
+				if self.is_authorised[0] and (not self.imei or not self.imei == self.name):
 					self.imei = request.imei
 					self.name = request.imei
 
