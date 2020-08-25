@@ -140,6 +140,8 @@ class ExtendedRequest(object):
 
 	def save(self):
 		# print("lon", self.lon, " lat", self.lat, "------------------")
+		if not self.short_packet:
+			print("+++++++++++++++++++++++++ SHOORT PACKET is None")
 		extended = ExtendedPacketSession.save_data(hdop=self.hdop, inputs=self.inputs,
 		                                outputs=self.outputs, adc=self.adc, ibutton=self.ibutton, short_packet=self.short_packet)
 		for param in self._parameters:
