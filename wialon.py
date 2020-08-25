@@ -129,9 +129,11 @@ class WialonRequest(WialonRequestBase):
 		msg_splited = self.msg.split(";")
 		try:
 			if len(msg_splited) == 15:
+				# print("here 15---")
 				msg_splited.append(self.crc)
 			else:
 				self.validate_crc()
+			# print("before short packete")
 			short_req = ShortRequest(self.socket, self.imei, None)
 			short_req.date_time = msg_splited[0], msg_splited[1]
 			short_req.lat = (msg_splited[2], msg_splited[3])
@@ -142,7 +144,6 @@ class WialonRequest(WialonRequestBase):
 			short_req.sats = msg_splited[9]
 			if short_req.lat and short_req.lon:
 				sh_req_saved = short_req.save()
-				print("---------> ID ", sh_req_saved.id)
 				extended_req = ExtendedRequest(sh_req_saved.id)
 				extended_req.hdop = msg_splited[10]
 				extended_req.inputs = msg_splited[11]
