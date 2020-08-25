@@ -9,8 +9,8 @@ class ClientThread(MyThread):
 	def __init__(self, clientAddress, clientsocket):
 		super().__init__()
 		self.csocket = clientsocket
-		self.imei = "CLIENT3"
-		self.is_authorised = [True]
+		self.imei = None
+		self.is_authorised = [False]
 		self.clientAddress = clientAddress
 		print("New connection added: ", clientAddress)
 
