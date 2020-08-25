@@ -49,7 +49,7 @@ while True:
 client.close()
 
 #L#2.0;Fuel;Password;
-#L#2.0;Client3;Password;
+#L#2.0;CLIENT3;Password;
 #O#
 #c#2.0;IMEI;;2d49
 #SD#NA;NA;NA;N;NA;E;12;NA;NA;2;
