@@ -144,6 +144,9 @@ class WialonRequest(WialonRequestBase):
 			short_req.sats = msg_splited[9]
 			if short_req.lat and short_req.lon:
 				sh_req_saved = short_req.save()
+				if not sh_req_saved:
+					print("----------__SHORT PACKET does not CREATED")
+
 				extended_req = ExtendedRequest(sh_req_saved.id)
 				extended_req.hdop = msg_splited[10]
 				extended_req.inputs = msg_splited[11]

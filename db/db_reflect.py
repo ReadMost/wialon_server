@@ -27,6 +27,7 @@ class ShortRequestSession(object):
 		                     speed=speed, course=course, alt=alt, sats=sats, black_box=black_box, imei=imei)
 		session.add(sh_req)
 		session.commit()
+		session.flush()
 		return sh_req
 
 class BlackBoxSession(object):
@@ -51,6 +52,8 @@ class ExtendedPacketSession(object):
 		                     outputs=outputs, adc=adc, ibutton=ibutton, short_packet=short_packet)
 		session.add(extended_req)
 		session.commit()
+		session.flush()
+
 		return extended_req
 
 class ParamsSession(object):
@@ -60,3 +63,5 @@ class ParamsSession(object):
 		params = Params(name, type, value, extended)
 		session.add(params)
 		session.commit()
+		session.flush()
+
