@@ -92,17 +92,14 @@ class WialonRequest(WialonRequestBase):
 	def handle_online_list(self):
 		imeis = json.loads(self.msg[:-1])
 		threads_name = {}
-		print("111")
 		for thread in threading.enumerate():
 			threads_name[thread.name] = True
-		result = {}
-		print("222")
+		result = []
 		for imei in imeis:
 			if imei in threads_name:
-				result[imei] = True
+				result.append({'imei': imei, 'is_online': True})
 			else:
-				result[imei] = False
-		print("333")
+				result.append({'imei': imei, 'is_online': False})
 		return send_all_custom(self.socket, json.dumps(result))
 
 	'''SD request'''
