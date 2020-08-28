@@ -38,11 +38,13 @@ class ShortPacket(Base):
 	course = Column(Integer, nullable=True)
 	alt = Column(Integer, nullable=True)
 	sats = Column(Integer, nullable=True)
-	created_at = Column(DateTime)
+	created_at = Column(DateTime(timezone=True))
 	imei = Column(String, nullable=True)
 	black_box = Column('black_box_id', Integer, ForeignKey('telematics_blackboxpacket.id'))
 
 	def __init__(self, date_time, point, speed, course, alt, sats, black_box, imei):
+		print(date_time)
+		print(datetime.datetime.now(timezone) + datetime.timedelta(hours=6))
 		self.date_time = date_time
 		self.point = point
 		self.speed = speed
@@ -51,7 +53,9 @@ class ShortPacket(Base):
 		self.sats = sats
 		self.black_box = black_box
 		self.imei = imei
-		self.created_at = datetime.datetime.now(timezone)
+		self.created_at = datetime.datetime.now(timezone) + datetime.timedelta(hours=6)
+
+
 
 class ExtendedPacket(Base):
 	__tablename__ = 'telematics_extendedpacket'

@@ -51,7 +51,6 @@ class WialonRequest(WialonRequestBase):
 	'''LOGIN'''
 	def handle_login(self, is_authorised):
 		login_arr = self.msg.split(";")
-		print(self.crc, self.msg)
 		if len(login_arr) <= 2:
 			imei = login_arr[0]
 			is_authorised[0] = True

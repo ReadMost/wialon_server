@@ -87,7 +87,7 @@ def init_engine(uri, **kwargs):
     """
     global engine
     if engine is None:
-        engine = create_engine(uri, **kwargs)
+        engine = create_engine(uri,  connect_args={"options": "-c timezone=utc+6"}, **kwargs)
     return engine
 
 

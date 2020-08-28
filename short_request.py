@@ -70,9 +70,7 @@ class ShortRequest(object):
 					date_time = datetime.datetime.strptime(date, '%d%m%y')
 
 			# dt_aware = timezone.localize(date_time)
-			dt_aware = date_time.replace(tzinfo=timezone)
-			dt_aware += datetime.timedelta(hours=6)
-			self._date_time = dt_aware
+			self._date_time = date_time
 		except Exception as e:
 			print(str(e))
 			raise TimeError
