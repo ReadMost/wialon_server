@@ -43,8 +43,6 @@ class ShortPacket(Base):
 	black_box = Column('black_box_id', Integer, ForeignKey('telematics_blackboxpacket.id'))
 
 	def __init__(self, date_time, point, speed, course, alt, sats, black_box, imei):
-		print(date_time)
-		print(datetime.datetime.now(timezone) + datetime.timedelta(hours=6))
 		self.date_time = date_time
 		self.point = point
 		self.speed = speed
