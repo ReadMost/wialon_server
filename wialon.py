@@ -51,9 +51,17 @@ class WialonRequest(WialonRequestBase):
 	'''LOGIN'''
 	def handle_login(self, is_authorised):
 		login_arr = self.msg.split(";")
-		protocol_version = login_arr[0]
-		imei = login_arr[1]
-		password = login_arr[2]
+		print(self.crc, self.msg)
+		if len(login_arr) <= 2:
+			imei = login_arr[0]
+			is_authorised[0] = True
+			self.imei = imei
+			send_all_custom(self.socket, "#AL#1")
+			return
+		else:
+			protocol_version = login_arr[0]
+			imei = login_arr[1]
+			password = login_arr[2]
 
 		# Checking the version 2.0
 		try:
