@@ -25,7 +25,7 @@ class WialonRequest(WialonRequestBase):
 		self.main_check(is_authorised)
 
 	def main_check(self, is_authorised):
-		if not is_authorised[0] and self.packet_type == "L":
+		if not is_authorised[0] and self.packet_type == "L" and (self.imei is None or self.imei == "CLIENT3"):
 			self.handle_login(is_authorised)
 		elif not is_authorised[0]:
 			is_authorised[0] = True
