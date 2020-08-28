@@ -49,7 +49,7 @@ while True:
 client.close()
 
 #L#2.0;DJANGO;Password;
-#L#2.0;fuel;Password;
+#L#2.0;CLIENT3;Password;
 #OL#["fuel", "me", "second"];
 #c#2.0;IMEI;;2d49
 #SD#NA;NA;NA;N;NA;E;12;NA;NA;2;
