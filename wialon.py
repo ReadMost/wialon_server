@@ -8,6 +8,7 @@ from my_lib import send_all_custom, save_logs
 from short_request import ShortRequest
 from wialon_base import WialonRequestBase
 from exceptions import *
+import json
 
 
 class WialonRequest(WialonRequestBase):
@@ -41,6 +42,8 @@ class WialonRequest(WialonRequestBase):
 			self.handle_black_box_request()
 		elif self.packet_type == "O":
 			self.handle_online()
+		elif self.packet_type == "OL":
+			self.handle_online_list()
 		else:
 			send_all_custom(self.socket, "WARNING: Unhandled message")
 
@@ -83,6 +86,21 @@ class WialonRequest(WialonRequestBase):
 			elif is_first and thread.name == self.imei:
 				return send_all_custom(self.socket, "#AO#1")
 		return send_all_custom(self.socket, "#AO#0")
+
+	'''Online list request'''
+
+	def handle_online_list(self):
+		imeis = json.loads(self.msg[:-1])
+		threads_name = {}
+		for thread in threading.enumerate():
+			threads_name[thread.name] = True
+		result = {}
+		for imei in imeis:
+			if imei in threads_name:
+				result[imei] = True
+			else:
+				result[imei] = False
+		return send_all_custom(self.socket, '#AOL#' + json.dumps(result))
 
 	'''SD request'''
 	def handle_short_request(self):
