@@ -7,13 +7,14 @@ from statics import *
 from exceptions import *
 
 class WialonRequestBase:
-	def __init__(self, socket ,clientAddress, request):
+	def __init__(self, socket ,clientAddress, request, version):
 		self.socket = socket
 		self.clientAddress = clientAddress
 		self.request = request
 		self.packet_type = None
 		self.msg = None
 		self.crc = None
+		self.version = version
 
 		# todo: remove in production
 		# if not DEBUG:
@@ -28,22 +29,32 @@ class WialonRequestBase:
 		divided_request = self.request.split("#")
 		self.packet_type = divided_request[1]
 		msg = divided_request[-1].split(";")
-		crc_hex = msg.pop()
-		if crc_hex:
-			try:
-				crc = int(crc_hex, 16)
-				self.crc = hex(crc)
-				self.msg = ";".join(msg) + ";"
-			except:
+		'''
+			VERSION INDETIFY
+		'''
+		if self.packet_type == 'L' and len(msg) == 2:
+			self.msg = ";".join(msg)
+			self.version = 1
+		elif self.packet_type == 'L':
+			self.version = 2
+
+		if self.version == 2:
+			crc_hex = msg.pop()
+			if crc_hex:
 				try:
+					crc = int(crc_hex, 16)
+					self.crc = hex(crc)
+					self.msg = ";".join(msg) + ";"
+				except:
 					crc_bb = crc_hex.split("|")
 					crc = int(crc_bb.pop(), 16)
 					self.crc = hex(crc)
 					self.msg = ";".join(msg) + ";" + crc_bb[0] + "|"
-				except:
-					'''FOR D REQUEST WITHOUT CRC'''
-					self.crc = crc_hex
-					self.msg = ";".join(msg)
+
+		elif self.version == 1:
+			self.msg = ";".join(msg)
+		else:
+			print("VERSION NOT IDENTIFIED!!!")
 
 
 	def decompress_request(self):

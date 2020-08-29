@@ -12,25 +12,23 @@ import json
 
 
 class WialonRequest(WialonRequestBase):
-	def __init__(self, socket, clientAdress,  request, is_authorised, imei):
+	def __init__(self, socket, clientAdress,  request, is_authorised, imei, version):
 		'''
 		self.socket
 		self.request
 		self.packet_type
 		self.msg
 		self.crc
+		self.version
 		'''
 		self.imei = imei
-		super().__init__(socket, clientAdress, request)
+		super().__init__(socket, clientAdress, request, version)
 		self.main_check(is_authorised)
 
 	def main_check(self, is_authorised):
-		if not is_authorised[0] and self.packet_type == "L" and (self.imei is None or self.imei == "CLIENT3"):
+		if not is_authorised[0] and self.packet_type == "L":
 			self.handle_login(is_authorised)
 		elif not is_authorised[0]:
-			is_authorised[0] = True
-			self.imei = "CLIENT3"
-			return
 			raise CommonError(self.request, "Authentication is required")
 		elif self.packet_type == "P":
 			self.handle_ping()
@@ -50,34 +48,39 @@ class WialonRequest(WialonRequestBase):
 
 	'''LOGIN'''
 	def handle_login(self, is_authorised):
+
 		login_arr = self.msg.split(";")
-		if len(login_arr) <= 2:
-			imei = login_arr[0]
-			is_authorised[0] = True
-			self.imei = imei
-			send_all_custom(self.socket, "#AL#1")
-			return
-		else:
+		if self.version == 2:
 			protocol_version = login_arr[0]
 			imei = login_arr[1]
 			password = login_arr[2]
 
-		# Checking the version 2.0
-		try:
-			if not float(protocol_version) == 2.0:
-				send_all_custom(self.socket, "#AL#0")
-			self.validate_crc()
-			# todo: check the credentials to authentication
-			if imei and password:
+			# Checking the version 2.0
+			try:
+				if not float(protocol_version) == 2.0:
+					send_all_custom(self.socket, "#AL#0")
+				self.validate_crc()
+				# todo: check the credentials to authentication
+				if imei and password:
+					is_authorised[0] = True
+					self.imei = imei
+					send_all_custom(self.socket, "#AL#1")
+				elif not password:
+					send_all_custom(self.socket, "#AL#01")
+			except CrcError:
+				send_all_custom(self.socket, "#AL#10")
+			except Exception as e:
+				send_all_custom(self.socket, "ERROR: " + str(e))
+		else:
+			try:
+				imei = login_arr[0]
 				is_authorised[0] = True
 				self.imei = imei
 				send_all_custom(self.socket, "#AL#1")
-			elif not password:
-				send_all_custom(self.socket, "#AL#01")
-		except CrcError:
-			send_all_custom(self.socket, "#AL#10")
-		except Exception as e:
-			send_all_custom(self.socket, "ERROR: " + str(e))
+			except Exception as e:
+				# “0” – connection rejected by server
+				print("LOGIN ERROR: " + str(e))
+				send_all_custom(self.socket, "#AL#0")
 
 	'''Ping request'''
 	def handle_ping(self):
@@ -114,7 +117,8 @@ class WialonRequest(WialonRequestBase):
 		# Date;Time;Lat1;Lat2;Lon1;Lon2;Speed;Course;Alt;Sats;
 		msg_splited = self.msg.split(";")
 		try:
-			self.validate_crc()
+			if self.version == 2:
+				self.validate_crc()
 			short_req = ShortRequest(self.socket, self.imei, black_box=None)
 			short_req.date_time = msg_splited[0],msg_splited[1]
 			short_req.lat = (msg_splited[2],msg_splited[3])
@@ -156,10 +160,7 @@ class WialonRequest(WialonRequestBase):
 		# Date;Time;Lat1;Lat2;Lon1;Lon2;Speed;Course;Alt;Sats;HDOP;Inputs;Outputs;ADC;Ibutton;Params;
 		msg_splited = self.msg.split(";")
 		try:
-			if len(msg_splited) == 15:
-				# print("here 15---")
-				msg_splited.append(self.crc)
-			else:
+			if self.version == 2:
 				self.validate_crc()
 			# print("before short packete")
 			short_req = ShortRequest(self.socket, self.imei, None)
@@ -227,7 +228,8 @@ class WialonRequest(WialonRequestBase):
 		# Date;Time;Lat1;Lat2;Lon1;Lon2;Speed;Course;Alt;Sats;HDOP;Inputs;Outputs;ADC;Ibutton;Params;
 		msg_spliteds = self.msg.split("|")
 		try:
-			self.validate_crc()
+			if self.version == 2:
+				self.validate_crc()
 			total_num = 0
 			bb_requests = []
 			black_box = BlackBoxSession()

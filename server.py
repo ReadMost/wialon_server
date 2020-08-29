@@ -10,6 +10,7 @@ class ClientThread(MyThread):
 		super().__init__()
 		self.csocket = clientsocket
 		self.imei = None
+		self.version = None
 		self.is_authorised = [False]
 		self.clientAddress = clientAddress
 		print("New connection added: ", clientAddress)
@@ -29,9 +30,10 @@ class ClientThread(MyThread):
 				if msg == 'bye':
 					break
 
-				request = WialonRequest(self.csocket, self.clientAddress,  msg, self.is_authorised, self.imei)
+				request = WialonRequest(self.csocket, self.clientAddress,  msg, self.is_authorised, self.imei, self.version)
 				if self.is_authorised[0] and (not self.imei or not self.imei == self.name):
 					self.imei = request.imei
+					self.version = request.version
 					self.name = request.imei
 
 
