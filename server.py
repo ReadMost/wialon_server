@@ -13,7 +13,8 @@ class ClientThread(MyThread):
 		self.version = None
 		self.is_authorised = [False]
 		self.clientAddress = clientAddress
-		print("New connection added: ", clientAddress)
+		if clientAddress[0] != "192.168.176.3":
+			print("New connection added: ", clientAddress)
 
 	def run(self):
 		msg = ''
