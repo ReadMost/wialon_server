@@ -24,8 +24,9 @@ class ClientThread(MyThread):
 
 				msg = self.recv_custom(self.csocket)
 				self.save_logs(self.clientAddress, msg, dir="pure_logs")
-				if msg is None and self.clientAddress[0] != "192.168.176.3":
-					print("None message was send")
+				if msg is None:
+					if self.clientAddress[0] != "192.168.176.3":
+						print("None message was send")
 					raise OSError
 
 				if msg == 'bye':
