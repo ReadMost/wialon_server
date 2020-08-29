@@ -40,7 +40,8 @@ class ClientThread(MyThread):
 
 			except OSError as e:
 				print(str(e), "-------------")
-				cprint(str(self.clientAddress) + " has gone", "red", "on_grey")
+				if self.clientAddress[0] != "192.168.176.3":
+					cprint(str(self.clientAddress) + " has gone", "red", "on_grey")
 				break
 			except socket.error:
 				print("\033[1;35;40m",  str(socket.error))
