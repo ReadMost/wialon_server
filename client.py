@@ -48,7 +48,7 @@ while True:
 	print(recv_custom(client))
 client.close()
 
-#L#2.0;DJANGO;Password;
+#L#2.0;205005896;Password;
 #L#2.0;fuel;Password;
 #OL#["fuel", "me", "second"];
 #c#2.0;IMEI;;2d49
