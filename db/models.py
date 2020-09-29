@@ -51,7 +51,7 @@ class ShortPacket(Base):
 		self.sats = sats
 		self.black_box = black_box
 		self.imei = imei
-		self.created_at = datetime.datetime.now(timezone) + datetime.timedelta(hours=6)
+		self.created_at = datetime.datetime.now(timezone)
 
 
 
