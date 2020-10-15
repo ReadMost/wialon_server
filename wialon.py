@@ -249,7 +249,23 @@ class WialonRequest(WialonRequestBase):
 					total_num+=1
 					bb_requests.append(short_req)
 					if short_req.lat and short_req.lon:
-						short_req.save()
+						sh_req_saved = short_req.save()
+						if len(msg_splited) > 10:
+							if not sh_req_saved:
+								print("----------__SHORT PACKET does not CREATED")
+
+							extended_req = ExtendedRequest(sh_req_saved.id)
+							extended_req.hdop = msg_splited[10]
+							extended_req.inputs = msg_splited[11]
+							extended_req.outputs = msg_splited[12]
+							extended_req.adc = msg_splited[13]
+							extended_req.ibutton = msg_splited[14]
+
+							extended_req.parameters = msg_splited[15]
+
+							extended_req.save()
+							# Packet successfully registered.
+							save_logs(self.clientAddress, str(extended_req), dir="extended_request_logs")
 				except Exception as e:
 					print(str(total_num) , " ", str(e))
 					continue
