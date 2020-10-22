@@ -192,7 +192,5 @@ class ShortRequest(object):
 
 	def update(self, id):
 		# print("lon", self.lon, " lat", self.lat, "------------------")
-		print("+++")
 		sh_req = ShortRequestSession.update_data(fuel=self.fuel, id=id)
-		print("+++++++")
 		return sh_req
