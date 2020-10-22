@@ -22,12 +22,20 @@ class ShortRequestSession(object):
 
 
 	@staticmethod
-	def save_data(date_time, point, speed, course, alt, sats, black_box, imei,  *args, **kwargs):
+	def save_data(date_time, point, speed, course, alt, sats, black_box, imei, fuel, *args, **kwargs):
 		init_session_factory()
 		with ManagedSession() as session:
 			sh_req = ShortPacket(date_time=date_time, point="SRID=3857;" + transform_geom(point[1], point[0]).wkt,
-		                     speed=speed, course=course, alt=alt, sats=sats, black_box=black_box, imei=imei)
+		                     speed=speed, course=course, alt=alt, sats=sats, black_box=black_box, imei=imei, fuel=fuel)
 			session.add(sh_req)
+			return sh_req
+
+	@staticmethod
+	def update_data(fuel, id):
+		init_session_factory()
+		with ManagedSession() as session:
+			sh_req = session.query(ShortPacket).get(id)
+			sh_req.fuel = fuel
 			return sh_req
 
 class BlackBoxSession(object):

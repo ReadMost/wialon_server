@@ -1,8 +1,10 @@
 from db.db_reflect import ExtendedPacketSession, ParamsSession
 from exceptions import *
 import datetime
+import logging
+logger = logging.getLogger(__name__)
 class ExtendedRequest(object):
-	def __init__(self, short_packet):
+	def __init__(self, short_packet, short_packet_obj):
 
 		self._hdop = None
 		self._inputs = None
@@ -11,6 +13,7 @@ class ExtendedRequest(object):
 		self._ibutton = None
 		self._parameters = None
 		self.short_packet = short_packet
+		self.short_packet_obj = short_packet_obj
 
 	def __repr__(self):
 		result = ''
@@ -144,5 +147,14 @@ class ExtendedRequest(object):
 			print("+++++++++++++++++++++++++ SHOORT PACKET is None")
 		extended = ExtendedPacketSession.save_data(hdop=self.hdop, inputs=self.inputs,
 		                                outputs=self.outputs, adc=self.adc, ibutton=self.ibutton, short_packet=self.short_packet)
+		is_fuel_exists = False
+		fuel = self.short_packet_obj.fuel
 		for param in self._parameters:
 			ParamsSession.save_data(param['name'], param['type'], param['value'], extended.id)
+			if 'fuel' in param['name'] and not param['type'] == 3:
+
+				fuel[param['name']] = float(param['value']) * 10
+				is_fuel_exists = True
+		if is_fuel_exists:
+			self.short_packet_obj.fuel = fuel
+			self.short_packet_obj.update(self.short_packet)

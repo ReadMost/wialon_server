@@ -1,6 +1,6 @@
 # coding=utf-8
 import datetime
-
+import sqlalchemy_jsonfield
 from sqlalchemy import Column, String, Integer, Float, DateTime, ForeignKey
 
 from db.base import Base
@@ -40,9 +40,13 @@ class ShortPacket(Base):
 	sats = Column(Integer, nullable=True)
 	created_at = Column(DateTime(timezone=True))
 	imei = Column(String, nullable=True)
+	fuel = Column(
+        sqlalchemy_jsonfield.JSONField,
+        nullable=True
+    )
 	black_box = Column('black_box_id', Integer, ForeignKey('telematics_blackboxpacket.id'))
 
-	def __init__(self, date_time, point, speed, course, alt, sats, black_box, imei):
+	def __init__(self, date_time, point, speed, course, alt, sats, black_box, imei, fuel):
 		self.date_time = date_time
 		self.point = point
 		self.speed = speed
@@ -51,6 +55,7 @@ class ShortPacket(Base):
 		self.sats = sats
 		self.black_box = black_box
 		self.imei = imei
+		self.fuel=fuel
 		self.created_at = datetime.datetime.now(timezone)
 
 

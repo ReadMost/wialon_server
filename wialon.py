@@ -176,7 +176,7 @@ class WialonRequest(WialonRequestBase):
 				if not sh_req_saved:
 					print("----------__SHORT PACKET does not CREATED")
 
-				extended_req = ExtendedRequest(sh_req_saved.id)
+				extended_req = ExtendedRequest(sh_req_saved.id, short_req)
 				extended_req.hdop = msg_splited[10]
 				extended_req.inputs = msg_splited[11]
 				extended_req.outputs = msg_splited[12]
@@ -254,7 +254,7 @@ class WialonRequest(WialonRequestBase):
 							if not sh_req_saved:
 								print("----------__SHORT PACKET does not CREATED")
 
-							extended_req = ExtendedRequest(sh_req_saved.id)
+							extended_req = ExtendedRequest(sh_req_saved.id, short_req)
 							extended_req.hdop = msg_splited[10]
 							extended_req.inputs = msg_splited[11]
 							extended_req.outputs = msg_splited[12]

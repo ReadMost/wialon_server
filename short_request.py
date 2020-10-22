@@ -17,6 +17,7 @@ class ShortRequest(object):
 		self._course = None
 		self._alt = None
 		self._sats = None
+		self._fuel = {}
 
 	def __repr__(self):
 		result = ''
@@ -34,6 +35,8 @@ class ShortRequest(object):
 			result += "_alt:" + str(self._alt) + ";"
 		if self._sats:
 			result += "_sats:" + str(self._sats) + ";"
+		if self._fuel:
+			result += "_fuel:" + str(self._fuel) + ";"
 		return result
 
 	def get_latitude(self, coord, direction):
@@ -166,9 +169,30 @@ class ShortRequest(object):
 			print(str(e))
 			raise SatelliteError
 
+	'''fuel'''
+
+	@property
+	def fuel(self):
+		return self._fuel
+
+	@fuel.setter
+	def fuel(self, value):
+		try:
+			if value is dict:
+				self._fuel = value
+		except Exception as e:
+			print(str(e))
+
 
 	def save(self):
 		# print("lon", self.lon, " lat", self.lat, "------------------")
 		sh_req = ShortRequestSession.save_data(date_time=self.date_time, point=[self.lat, self.lon], speed=self.speed, course=self.course,
-		                              alt=self.alt, sats=self.sats, black_box=self.black_box, imei=self.imei)
+		                              alt=self.alt, sats=self.sats, black_box=self.black_box, imei=self.imei, fuel=self.fuel)
+		return sh_req
+
+	def update(self, id):
+		# print("lon", self.lon, " lat", self.lat, "------------------")
+		print("+++")
+		sh_req = ShortRequestSession.update_data(fuel=self.fuel, id=id)
+		print("+++++++")
 		return sh_req
